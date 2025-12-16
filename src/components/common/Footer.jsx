@@ -7,7 +7,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 relative z-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 md:gap-12">
           <div>
-            <h3 className="text-white text-lg sm:text-xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-white to-slate-200 bg-clip-text text-transparent">
+            <h3 className="text-white text-lg sm:text-xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-white to-slate-200 bg-clip-text text-transparent font-megalith">
               Unique Stone
             </h3>
             <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">

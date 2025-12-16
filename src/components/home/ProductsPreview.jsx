@@ -24,15 +24,15 @@ const ProductCard = ({ product, index }) => {
       </div>
       <div className="p-4 sm:p-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0 mb-2 sm:mb-3">
-          <h3 className="text-lg sm:text-xl font-bold text-slate-900">{product.title}</h3>
-          <span className="px-2.5 sm:px-3 py-1 text-xs font-semibold rounded-full bg-gradient-to-r from-slate-100 to-slate-200 text-slate-800 border border-slate-200 w-fit">
+          <h3 className="text-lg sm:text-xl font-bold text-slate-900 font-montserrat">{product.title}</h3>
+          <span className="px-2.5 sm:px-3 py-1 text-xs font-semibold rounded-full bg-gradient-to-r from-slate-100 to-slate-200 text-slate-800 border border-slate-200 w-fit font-montserrat">
             {product.category}
           </span>
         </div>
-        <p className="text-sm sm:text-base text-slate-600 mb-3 sm:mb-4 leading-relaxed">{product.description}</p>
+        <p className="text-sm sm:text-base text-slate-600 mb-3 sm:mb-4 leading-relaxed font-lato">{product.description}</p>
         <Link
           to="/products"
-          className="text-gray-900 font-medium hover:underline inline-flex items-center"
+          className="text-gray-900 font-medium hover:underline inline-flex items-center font-lato"
         >
           Learn more →
         </Link>
@@ -54,15 +54,15 @@ const ProductsPreview = () => {
           transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
           className="text-center mb-12 sm:mb-16 md:mb-20"
         >
-          <span className="inline-block px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-semibold text-slate-700 bg-slate-100/80 backdrop-blur-sm rounded-full border border-slate-200/50 mb-3 sm:mb-4">
+          <span className="inline-block px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-semibold text-slate-700 bg-slate-100/80 backdrop-blur-sm rounded-full border border-slate-200/50 mb-3 sm:mb-4 font-montserrat">
             Our Products
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 mb-4 sm:mb-6 px-2">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 mb-4 sm:mb-6 px-2 font-megalith">
             <span className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 bg-clip-text text-transparent">
               Premium Stone Collection
             </span>
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto font-medium px-4">
+          <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto font-medium px-4 font-lato">
             Discover our curated selection of premium natural stones
           </p>
         </motion.div>

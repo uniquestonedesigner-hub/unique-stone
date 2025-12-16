@@ -4,7 +4,9 @@ import Header from "./components/common/Header";
 import Footer from "./components/common/Footer";
 import CatalogueButton from "./components/common/CatalogueButton";
 import Home from "./pages/Home";
-import Login from "./pages/auth/Login";
+import Products from "./pages/Products";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 import Dashboard from "./pages/dashboard/Dashboard";
 import PrivateRoute from "./components/common/PrivateRoute";
 
@@ -21,10 +23,9 @@ function App() {
         <main className="flex-grow pt-14 sm:pt-16">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route
-              path="/login"
-              element={<Login setIsAuthenticated={setIsAuthenticated} />}
-            />
+            <Route path="/products" element={<Products />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
             <Route
               path="/dashboard"
               element={

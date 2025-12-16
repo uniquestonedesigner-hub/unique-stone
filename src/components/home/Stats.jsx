@@ -26,11 +26,11 @@ const StatCard = ({ stat, index }) => {
         initial={{ scale: 0 }}
         animate={isInView ? { scale: 1 } : { scale: 0 }}
         transition={{ duration: 0.4, delay: index * 0.08 + 0.15, type: 'spring', stiffness: 200, damping: 20 }}
-        className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold bg-gradient-to-r from-white via-slate-100 to-white bg-clip-text text-transparent mb-2 sm:mb-3"
+        className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold bg-gradient-to-r from-white via-slate-100 to-white bg-clip-text text-transparent mb-2 sm:mb-3 font-megalith"
       >
         {stat.number}
       </motion.div>
-      <div className="text-sm sm:text-base md:text-lg text-slate-300 font-medium px-2">{stat.label}</div>
+      <div className="text-sm sm:text-base md:text-lg text-slate-300 font-medium px-2 font-lato">{stat.label}</div>
     </motion.div>
   )
 }
@@ -47,15 +47,15 @@ const Stats = () => {
           transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
           className="text-center mb-12 sm:mb-16 md:mb-20"
         >
-          <span className="inline-block px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-semibold text-slate-300 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-3 sm:mb-4">
+          <span className="inline-block px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-semibold text-slate-300 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-3 sm:mb-4 font-montserrat">
             Our Achievements
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 sm:mb-6 px-2">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 sm:mb-6 px-2 font-megalith">
             <span className="bg-gradient-to-r from-white via-slate-100 to-white bg-clip-text text-transparent">
               Numbers That Speak
             </span>
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-slate-300 max-w-2xl mx-auto font-medium px-4">
+          <p className="text-base sm:text-lg md:text-xl text-slate-300 max-w-2xl mx-auto font-medium px-4 font-lato">
             Our commitment to excellence reflected in every project
           </p>
         </motion.div>

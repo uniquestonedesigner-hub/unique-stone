@@ -1,30 +1,32 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import Button from "./Button";
 
 const Header = ({ isAuthenticated, setIsAuthenticated }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [isAtTop, setIsAtTop] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => {
+      // Skip scroll logic on mobile
+      if (window.innerWidth < 768) {
+        setIsVisible(true);
+        return;
+      }
+
       const currentScrollY = window.scrollY;
       const windowHeight = window.innerHeight;
       const documentHeight = document.documentElement.scrollHeight;
       const isAtBottom = currentScrollY + windowHeight >= documentHeight - 10;
       const isAtTopNow = currentScrollY < 50;
 
-      setIsAtTop(isAtTopNow);
-
-      // Always show at top or bottom
       if (isAtTopNow || isAtBottom) {
         setIsVisible(true);
       } else {
-        // Hide when scrolling down, show when scrolling up
         if (currentScrollY > lastScrollY && currentScrollY > 100) {
           setIsVisible(false);
         } else if (currentScrollY < lastScrollY) {
@@ -39,162 +41,189 @@ const Header = ({ isAuthenticated, setIsAuthenticated }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
+
   const handleLogout = () => {
     setIsAuthenticated(false);
     navigate("/");
     setMobileMenuOpen(false);
   };
 
-  const navLinks = [{ to: "/", label: "Home" }];
+  const navLinks = [
+    { to: "/", label: "Home" },
+    { to: "/products", label: "Products" },
+    { to: "/about", label: "About" },
+    { to: "/contact", label: "Contact" },
+  ];
+
+  const isActive = (path) => location.pathname === path;
 
   return (
-    <motion.header
-      initial={{ y: 0 }}
-      animate={{
-        y: isVisible ? 0 : -100,
-        opacity: isVisible ? 1 : 0,
-      }}
-      transition={{
-        duration: 0.3,
-        ease: [0.25, 0.1, 0.25, 1],
-      }}
-      className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/60 shadow-sm"
-    >
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-14 sm:h-16">
-          <Link to="/" className="flex items-center group">
-            <motion.h1 className="text-base sm:text-lg md:text-xl font-bold text-slate-900">
-              Unique Stone
-            </motion.h1>
-          </Link>
+    <>
+      {/* Header */}
+      <header
+        className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-slate-200 shadow-sm"
+        style={{
+          opacity: 1,
+          transform: "translateY(0)",
+        }}
+      >
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-14 sm:h-16">
+            {/* Logo */}
+            <Link to="/" className="flex items-center">
+              <img
+                src="/LOGO.png"
+                alt="Unique Stone"
+                className="h-8 sm:h-9 md:h-10 w-auto"
+              />
+            </Link>
 
-          {/* Desktop Navigation - Coming Soon */}
-          <div className="hidden md:flex items-center">
-            <span className="px-4 py-2 text-sm font-medium text-slate-500 italic">
-              More sections coming soon...
-            </span>
-          </div>
-
-          {/* Desktop Auth Buttons */}
-          <div className="hidden md:flex items-center space-x-3">
-            {isAuthenticated && (
-              <>
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center space-x-1">
+              {navLinks.map((link) => (
                 <Link
-                  to="/dashboard"
-                  className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-50 transition-colors duration-200"
+                  key={link.to}
+                  to={link.to}
+                  className={`relative px-4 py-2 text-sm font-semibold rounded-lg transition-colors duration-200 font-montserrat ${
+                    isActive(link.to)
+                      ? "text-slate-900 bg-slate-100"
+                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                  }`}
                 >
-                  Dashboard
+                  {link.label}
                 </Link>
-                <Button variant="primary" size="sm" onClick={handleLogout}>
-                  Logout
-                </Button>
-              </>
-            )}
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors duration-200"
-            aria-label="Toggle menu"
-          >
-            <motion.svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              animate={mobileMenuOpen ? { rotate: 90 } : { rotate: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              {mobileMenuOpen ? (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              )}
-            </motion.svg>
-          </button>
-        </div>
-
-        {/* Mobile Menu */}
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="md:hidden overflow-hidden"
-            >
-              <div className="py-4 space-y-2 border-t border-slate-200/50 mt-2">
-                {navLinks.map((link, index) => (
-                  <motion.div
-                    key={link.to}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
+              ))}
+              {isAuthenticated && (
+                <>
+                  <div className="ml-2 pl-2 border-l border-slate-200">
                     <Link
+                      to="/dashboard"
+                      className="px-4 py-2 text-sm font-semibold text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-50 transition-colors duration-200 font-montserrat"
+                    >
+                      Dashboard
+                    </Link>
+                  </div>
+                  <Button variant="primary" size="sm" onClick={handleLogout}>
+                    Logout
+                  </Button>
+                </>
+              )}
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 rounded-lg text-slate-700 hover:bg-slate-100 transition-colors"
+              aria-label="Toggle menu"
+              type="button"
+            >
+              <div className="w-6 h-6 flex flex-col justify-center gap-1.5">
+                <span
+                  className={`h-0.5 bg-slate-700 rounded-full transition-all duration-300 ${
+                    mobileMenuOpen ? "rotate-45 translate-y-2" : ""
+                  }`}
+                />
+                <span
+                  className={`h-0.5 bg-slate-700 rounded-full transition-all duration-300 ${
+                    mobileMenuOpen ? "opacity-0" : ""
+                  }`}
+                />
+                <span
+                  className={`h-0.5 bg-slate-700 rounded-full transition-all duration-300 ${
+                    mobileMenuOpen ? "-rotate-45 -translate-y-2" : ""
+                  }`}
+                />
+              </div>
+            </button>
+          </div>
+        </nav>
+      </header>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setMobileMenuOpen(false)}
+              className="fixed inset-0 bg-black/30 z-[60] md:hidden"
+            />
+
+            {/* Menu Panel - Slides from left */}
+            <motion.div
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{
+                type: "spring",
+                stiffness: 300,
+                damping: 30,
+              }}
+              className="fixed top-0 left-0 bottom-0 w-72 max-w-[80vw] bg-white shadow-2xl z-[70] md:hidden overflow-y-auto"
+            >
+              <div className="p-6 pt-20">
+                {/* Brand */}
+                <div className="mb-8 pb-6 border-b border-slate-200">
+                  <h2 className="text-2xl font-bold text-slate-900 font-megalith mb-1">
+                    Unique Stone
+                  </h2>
+                  <p className="text-sm text-slate-500 font-lato">
+                    Premium Natural Stones
+                  </p>
+                </div>
+
+                {/* Navigation Links */}
+                <div className="space-y-2">
+                  {navLinks.map((link) => (
+                    <Link
+                      key={link.to}
                       to={link.to}
                       onClick={() => setMobileMenuOpen(false)}
-                      className="block px-4 py-2.5 text-base font-medium text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-50 transition-colors duration-200"
+                      className={`block px-4 py-3 text-base font-semibold rounded-xl transition-all duration-200 font-montserrat ${
+                        isActive(link.to)
+                          ? "bg-slate-900 text-white"
+                          : "text-slate-700 hover:bg-slate-50"
+                      }`}
                     >
                       {link.label}
                     </Link>
-                  </motion.div>
-                ))}
-                <div className="px-4 py-2.5">
-                  <span className="text-sm font-medium text-slate-500 italic">
-                    More sections coming soon...
-                  </span>
+                  ))}
                 </div>
+
+                {/* Auth Section */}
                 {isAuthenticated && (
-                  <>
-                    <motion.div
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: navLinks.length * 0.1 }}
+                  <div className="mt-8 pt-6 border-t border-slate-200 space-y-3">
+                    <Link
+                      to="/dashboard"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="block px-4 py-3 text-base font-semibold text-slate-700 hover:bg-slate-50 rounded-xl transition-colors duration-200 font-montserrat"
                     >
-                      <Link
-                        to="/dashboard"
-                        onClick={() => setMobileMenuOpen(false)}
-                        className="block px-4 py-2.5 text-base font-medium text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-50 transition-colors duration-200"
-                      >
-                        Dashboard
-                      </Link>
-                    </motion.div>
-                    <motion.div
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: (navLinks.length + 1) * 0.1 }}
-                      className="px-4"
+                      Dashboard
+                    </Link>
+                    <Button
+                      variant="primary"
+                      size="md"
+                      onClick={handleLogout}
+                      fullWidth
+                      className="font-montserrat"
                     >
-                      <Button
-                        variant="primary"
-                        size="sm"
-                        onClick={handleLogout}
-                        fullWidth
-                      >
-                        Logout
-                      </Button>
-                    </motion.div>
-                  </>
+                      Logout
+                    </Button>
+                  </div>
                 )}
               </div>
             </motion.div>
-          )}
-        </AnimatePresence>
-      </nav>
-    </motion.header>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 

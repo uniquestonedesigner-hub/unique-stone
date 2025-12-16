@@ -49,7 +49,7 @@ const CatalogueButton = () => {
         
         {/* Subtle pulse effect */}
         <motion.span
-          className="absolute inset-0 rounded-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 opacity-60"
+          className="absolute inset-0 rounded-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 opacity-60 gpu-accelerated"
           animate={{
             scale: [1, 1.15, 1],
             opacity: [0.6, 0, 0.6],
@@ -59,7 +59,6 @@ const CatalogueButton = () => {
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="gpu-accelerated"
         />
       </motion.button>
     </motion.div>
